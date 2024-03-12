@@ -4,12 +4,11 @@ import typer
 from dumbo_asp.primitives.models import Model
 from dumbo_asp.primitives.programs import SymbolicProgram
 from dumbo_asp.queries import explanation_graph, pack_xasp_navigator_url
+from dumbo_runlim import utils
+from dumbo_runlim.utils import run_experiment, external_command
 from dumbo_utils.console import console
 from dumbo_utils.url import compress_object_for_url
 from xasp.entities import Explain
-
-from dumbo_runlim import utils
-from dumbo_runlim.utils import run_experiment, external_command
 
 programs = {
     "ucore 4x4": """
@@ -202,19 +201,15 @@ def teardown_xasp(result):
 
 
 @external_command
-def main(
+def command(
         output_file: Path = typer.Option(
             "output.csv", "--output-file", "-o",
             help="File to store final results",
         ),
 ) -> None:
-    """
-    Experiment for the ICLP 2024 paper.
-    """
     answer_sets = {key: Model.of_program(program) for key, program in programs.items()}
     queries = {key: answer_set.filter(lambda atom: atom.predicate_name == "assign")
                for key, answer_set in answer_sets.items()}
-
     res = {}
 
     def on_complete_task(task_id, resources, result):
@@ -228,7 +223,7 @@ def main(
                 links, assumptions, url = result
                 file.write(
                     f"{task_id}\t{resources.real_time_usage}\t{resources.time_usage}\t{resources.memory_usage}\t{links}\t{assumptions}\t{url}\n")
-        utils.on_all_done()
+        utils.on_all_done_log()
 
     run_experiment(
         *(
