@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dumbo-runlim-ucorexplain"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["malvi <mario.alviano@gmail.com>"]
 readme = "README.md"
@@ -9,7 +9,7 @@ readme = "README.md"
 python = "^3.11"
 xasp = "^0.8.3"
 dumbo-asp = "^0.3.6"
-dumbo-runlim = "^0.2.4"
+dumbo-runlim = "^0.2.5"
 
 
 [build-system]
